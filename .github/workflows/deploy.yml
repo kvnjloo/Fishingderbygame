@@ -1,0 +1,27 @@
+name: Build and Deploy to Pages
+on:
+  push:
+    branches: ["main"] # This tells it to run every time you push code
+  workflow_dispatch:   # This lets you run it manually for testing
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Install and Build 🔧
+        run: |
+          npm install
+          npm run build
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist # This is where Figma Make puts your finished code
