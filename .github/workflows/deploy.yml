@@ -40,7 +40,7 @@ jobs:
           
           # 3. THE MASTER MOVE: Overwrite Figma's config with your 'Boss' config
           # We use -f to force it and ensure it's sitting in the root folder
-          cp -f vite.config.ts ./vite.config.ts
+          cp vite.config.ts vite.config.ts.tmp && mv -f vite.config.ts.tmp vite.config.ts
           
           # 4. Standard Build
           npm install
