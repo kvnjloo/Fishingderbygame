@@ -33,8 +33,8 @@ jobs:
       - name: Sync and Build 🔧
         run: |
           # This moves Figma's new art into your working area without deleting your package.json
-          cp -r figma-files/* . 
-          cp vite.config.js ./vite.config.js
+          cp -r figma-files/* . || true 
+          cp -f vite.config.js ./vite.config.js || echo "Config already in place"
           npm install
           npm run build
 
