@@ -32,11 +32,17 @@ jobs:
 
       - name: Sync and Build 🔧
         run: |
+          # 1. Clean out any old build attempts
+          rm -rf dist
           # This moves Figma's new art into your working area without deleting your package.json
           cp -r figma-files/* . || true 
-          cp -f vite.config.js ./vite.config.js || echo "Config already in place"
+          # 3. FORCE your Production "Boss" config (This is the most important part!)
+          cp -f vite.config.js ./vite.config.js
+          # 4. Standard Build
           npm install
           npm run build
+          # 5. DIAGNOSTIC: Check if the build actually worked
+          ls -R dist # This prints the folder contents to the log so we can see them
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
