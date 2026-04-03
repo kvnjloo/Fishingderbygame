@@ -45,10 +45,19 @@ jobs:
           # 4. Standard Build
           npm install
           npm run build
-
+          
+          # 5. THE FORCE-CHANGE MOVE: Create a unique file so GitHub CANNOT skip the deploy
+          # This creates a file called 'build-time.txt' with the current time inside it.
+          date > dist/build-time.txt
+          
+          # 6. DIAGNOSTIC
+          ls -R dist
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: dist
           branch: gh-pages
-          force: true # This forces GitHub to acknowledge the new files
+          clean: true      # Wipes the old broken files first
+          force: true      # Forces the update even if the Robot is "unsure"
+          git-config-name: kvnjloo
+          git-config-email: kvnjloo@users.noreply.github.com
