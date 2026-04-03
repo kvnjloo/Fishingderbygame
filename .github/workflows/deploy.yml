@@ -58,6 +58,4 @@ jobs:
           folder: dist
           branch: gh-pages
           clean: true      # Wipes the old broken files first
-          force: true      # Forces the update even if the Robot is "unsure"
-          git-config-name: kvnjloo
-          git-config-email: kvnjloo@users.noreply.github.com
+          single-commit: true #
