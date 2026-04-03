@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
+        with:
+          ref: main # This tells the robot to grab Figma's latest push
 
       - name: Setup Node 🏗️
         uses: actions/setup-node@v4
@@ -31,5 +33,8 @@ jobs:
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist
+          branch: gh-pages # Always send the finished game here
         with:
           folder: dist
