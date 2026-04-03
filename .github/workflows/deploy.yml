@@ -43,4 +43,4 @@ jobs:
         with:
           folder: dist
           branch: gh-pages
-          clean: true
+          force: true # This forces GitHub to acknowledge the new files
