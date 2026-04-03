@@ -16,18 +16,24 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
+      - name: Checkout Production (The Brains) 🧠
+        uses: actions/checkout@v4
+
+      - name: Checkout Main (The Figma Art) 🛎️
         uses: actions/checkout@v4
         with:
-          ref: main # This tells the robot to grab Figma's latest push
+          ref: main
+          path: figma-files # This puts Figma's stuff in a separate folder so it doesn't overwrite your scripts
 
       - name: Setup Node 🏗️
         uses: actions/setup-node@v4
         with:
           node-version: '24'
 
-      - name: Install and Build 🔧
+      - name: Sync and Build 🔧
         run: |
+          # This moves Figma's new art into your working area without deleting your package.json
+          cp -r figma-files/* . 
           npm install
           npm run build
 
@@ -35,4 +41,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: dist
-          branch: gh-pages # Always send the finished game here
+          branch: gh-pages
