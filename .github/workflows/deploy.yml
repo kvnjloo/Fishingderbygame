@@ -36,5 +36,3 @@ jobs:
         with:
           folder: dist
           branch: gh-pages # Always send the finished game here
-        with:
-          folder: dist
