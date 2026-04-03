@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "dev": "vite",
-    "homepage": "https://kvnjloo.github.io/Fishingderbygame/"
+    "dev": "vite"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",

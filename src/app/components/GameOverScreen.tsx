@@ -1,4 +1,4 @@
-import { XCircle, RotateCcw } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
 
 interface GameOverScreenProps {
   score: number;
@@ -16,29 +16,28 @@ export function GameOverScreen({
   onRestart,
 }: GameOverScreenProps) {
   return (
-    <div className="absolute inset-0 bg-gradient-to-b from-red-950 to-gray-950 flex items-center justify-center z-10 p-8">
-      <div className="text-center max-w-2xl">
+    <div className="absolute inset-0 bg-gradient-to-b from-red-950 to-gray-950 flex items-center justify-center z-10 p-4 overflow-hidden">
+      <div className="text-center w-full max-w-[700px] h-full flex flex-col justify-between py-4">
         {/* Game Over Title */}
-        <div className="mb-8">
-          <XCircle className="w-24 h-24 text-red-500 mx-auto mb-4 animate-pulse" />
-          <h1 className="text-6xl font-bold text-red-500 mb-4 tracking-wider pixel-title">
+        <div className="flex-shrink-0">
+          <h1 className="text-5xl font-bold text-red-500 mb-2 tracking-wider pixel-title">
             GAME OVER
           </h1>
-          <div className="text-white text-xl font-mono">
+          <div className="text-white text-lg font-mono">
             Too many fish were harmed!
           </div>
         </div>
 
         {/* Stats */}
-        <div className="bg-black/50 p-8 rounded-lg border-4 border-red-700 mb-8">
-          <div className="grid grid-cols-2 gap-6">
+        <div className="bg-black/50 p-4 rounded-lg border-4 border-red-700 flex-1 flex items-center justify-center my-4">
+          <div className="grid grid-cols-2 gap-4 w-full">
             {/* Final Score */}
-            <div className="bg-black p-4 rounded border-2 border-red-900">
-              <div className="text-red-500 text-sm font-bold mb-2 tracking-wider">
+            <div className="bg-black p-3 rounded border-2 border-red-900">
+              <div className="text-red-500 text-xs font-bold mb-1 tracking-wider">
                 FINAL SCORE
               </div>
               <div
-                className="text-red-400 text-4xl font-mono font-bold tracking-wider"
+                className="text-red-400 text-3xl font-mono font-bold tracking-wider"
                 style={{ textShadow: '0 0 10px currentColor' }}
               >
                 {score.toString().padStart(6, '0')}
@@ -46,12 +45,12 @@ export function GameOverScreen({
             </div>
 
             {/* Level Reached */}
-            <div className="bg-black p-4 rounded border-2 border-yellow-900">
-              <div className="text-yellow-500 text-sm font-bold mb-2 tracking-wider">
+            <div className="bg-black p-3 rounded border-2 border-yellow-900">
+              <div className="text-yellow-500 text-xs font-bold mb-1 tracking-wider">
                 LEVEL REACHED
               </div>
               <div
-                className="text-yellow-400 text-4xl font-mono font-bold tracking-wider"
+                className="text-yellow-400 text-3xl font-mono font-bold tracking-wider"
                 style={{ textShadow: '0 0 10px currentColor' }}
               >
                 {level.toString().padStart(2, '0')}
@@ -59,12 +58,12 @@ export function GameOverScreen({
             </div>
 
             {/* Fish Lost */}
-            <div className="bg-black p-4 rounded border-2 border-orange-900">
-              <div className="text-orange-500 text-sm font-bold mb-2 tracking-wider">
+            <div className="bg-black p-3 rounded border-2 border-orange-900">
+              <div className="text-orange-500 text-xs font-bold mb-1 tracking-wider">
                 FISH LOST
               </div>
               <div
-                className="text-orange-400 text-4xl font-mono font-bold tracking-wider"
+                className="text-orange-400 text-3xl font-mono font-bold tracking-wider"
                 style={{ textShadow: '0 0 10px currentColor' }}
               >
                 {fishRemoved}
@@ -72,12 +71,12 @@ export function GameOverScreen({
             </div>
 
             {/* Hazards Cleaned */}
-            <div className="bg-black p-4 rounded border-2 border-green-900">
-              <div className="text-green-500 text-sm font-bold mb-2 tracking-wider">
+            <div className="bg-black p-3 rounded border-2 border-green-900">
+              <div className="text-green-500 text-xs font-bold mb-1 tracking-wider">
                 HAZARDS CLEANED
               </div>
               <div
-                className="text-green-400 text-4xl font-mono font-bold tracking-wider"
+                className="text-green-400 text-3xl font-mono font-bold tracking-wider"
                 style={{ textShadow: '0 0 10px currentColor' }}
               >
                 {hazardsCleared}
@@ -86,21 +85,23 @@ export function GameOverScreen({
           </div>
         </div>
 
-        {/* Message */}
-        <div className="mb-8 text-gray-300 text-lg font-mono leading-relaxed">
-          The ocean needs more heroes like you!
-          <br />
-          Try again and save more marine life.
-        </div>
+        {/* Message and Button */}
+        <div className="flex-shrink-0">
+          <div className="mb-4 text-gray-300 text-base font-mono leading-relaxed">
+            The ocean needs more heroes like you!
+            <br />
+            Try again and save more marine life.
+          </div>
 
-        {/* Restart Button */}
-        <button
-          onClick={onRestart}
-          className="bg-gradient-to-b from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white px-12 py-4 rounded-lg border-4 border-red-900 font-bold text-2xl shadow-lg transform hover:scale-105 transition-all flex items-center gap-3 mx-auto"
-        >
-          <RotateCcw className="w-6 h-6" />
-          TRY AGAIN
-        </button>
+          {/* Restart Button */}
+          <button
+            onClick={onRestart}
+            className="bg-gradient-to-b from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white px-8 py-3 rounded-lg border-4 border-red-900 font-bold text-xl shadow-lg transition-colors flex items-center gap-3 mx-auto"
+          >
+            <RotateCcw className="w-5 h-5" />
+            TRY AGAIN
+          </button>
+        </div>
       </div>
 
       <style>{`

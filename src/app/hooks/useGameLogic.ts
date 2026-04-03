@@ -24,6 +24,7 @@ export function useGameLogic() {
     status: 'start',
     score: 0,
     level: 1,
+    questionNumber: 0, // Tracks which question (1-10) we're on
     fishRemoved: 0,
     hazardsCleared: 0,
     fish: [],
@@ -74,6 +75,7 @@ export function useGameLogic() {
       status: 'playing',
       score: 0,
       level: 1,
+      questionNumber: 0, // Reset question number
       fishRemoved: 0,
       hazardsCleared: 0,
     }));
@@ -86,6 +88,7 @@ export function useGameLogic() {
       status: 'start',
       score: 0,
       level: 1,
+      questionNumber: 0, // Reset question number
       fishRemoved: 0,
       hazardsCleared: 0,
       fish: [],
@@ -221,7 +224,16 @@ export function useGameLogic() {
         }
       }
       
-      // Check for fish collision if hazard is attached
+      // Update attached hazard position BEFORE checking fish collision
+      if (newAttachedId) {
+        updatedHazards = updatedHazards.map(h =>
+          h.id === newAttachedId
+            ? { ...h, position: { ...h.position, y: newY } }
+            : h
+        );
+      }
+      
+      // Check for fish collision if hazard is attached (after position update)
       if (newAttachedId) {
         const attachedHazard = updatedHazards.find(h => h.id === newAttachedId);
         if (attachedHazard) {
@@ -252,15 +264,6 @@ export function useGameLogic() {
             };
           }
         }
-      }
-      
-      // Update attached hazard position
-      if (newAttachedId) {
-        updatedHazards = updatedHazards.map(h =>
-          h.id === newAttachedId
-            ? { ...h, position: { ...h.position, y: newY } }
-            : h
-        );
       }
       
       return {
@@ -460,37 +463,63 @@ export function useGameLogic() {
       }
       
       const newScore = prev.score + scoreChange;
-      const newLevel = prev.level + 1;
+      const newQuestionNumber = prev.questionNumber + 1;
       
       if (prev.debugMode) {
-        console.log(`[Question] ${isCorrect ? 'Correct' : 'Wrong'} answer. Score change: ${scoreChange}. New score: ${newScore}`);
+        console.log(`[Question ${newQuestionNumber}] ${isCorrect ? 'Correct' : 'Wrong'} answer. Score change: ${scoreChange}. New score: ${newScore}`);
       }
       
-      // Check if game is complete
-      if (newLevel > 5) {
+      // After 10 questions (2 per level x 5 levels), game is complete
+      if (newQuestionNumber >= 10) {
         return {
           ...prev,
           score: newScore,
+          questionNumber: newQuestionNumber,
           status: 'celebration',
         };
       }
       
-      return {
-        ...prev,
-        score: newScore,
-        level: newLevel,
-        status: 'playing',
-        fishRemoved: 0,
-      };
+      // After every 2 questions, advance to next level
+      const isSecondQuestionOfLevel = newQuestionNumber % 2 === 0;
+      
+      if (isSecondQuestionOfLevel) {
+        // Move to next level
+        const newLevel = prev.level + 1;
+        return {
+          ...prev,
+          score: newScore,
+          level: newLevel,
+          questionNumber: newQuestionNumber,
+          status: 'playing',
+          // DON'T reset fishRemoved - it's cumulative for entire game
+        };
+      } else {
+        // Stay on same level, go back to playing for second question
+        return {
+          ...prev,
+          score: newScore,
+          questionNumber: newQuestionNumber,
+          status: 'playing',
+          // DON'T reset fishRemoved - it's cumulative for entire game
+        };
+      }
     });
     
-    // Initialize next level
-    if (gameState.level < 5) {
+    // Initialize next level only after the 2nd question of a level
+    const nextQuestionNumber = gameState.questionNumber + 1;
+    const willBeSecondQuestion = nextQuestionNumber % 2 === 0;
+    
+    if (willBeSecondQuestion && gameState.level < 5) {
       setTimeout(() => {
         initializeLevel(gameState.level + 1);
       }, 100);
+    } else if (!willBeSecondQuestion) {
+      // Re-initialize same level after first question
+      setTimeout(() => {
+        initializeLevel(gameState.level);
+      }, 100);
     }
-  }, [gameState.level, gameState.debugMode, initializeLevel]);
+  }, [gameState.level, gameState.questionNumber, gameState.debugMode, initializeLevel]);
 
   return {
     gameState,

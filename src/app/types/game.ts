@@ -42,6 +42,7 @@ export interface GameState {
   status: GameStatus;
   score: number;
   level: number;
+  questionNumber: number; // Track which question (1-10) we're on
   fishRemoved: number;
   hazardsCleared: number;
   fish: Fish[];

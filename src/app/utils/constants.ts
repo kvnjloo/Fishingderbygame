@@ -79,6 +79,36 @@ export const QUESTIONS: Question[] = [
     ],
     correctAnswer: 1,
   },
+  {
+    id: 6,
+    question: "How many tons of plastic enter the ocean every year?",
+    answers: ["1 million", "5 million", "8 million", "15 million"],
+    correctAnswer: 2,
+  },
+  {
+    id: 7,
+    question: "Which of these items takes the longest to decompose in the ocean?",
+    answers: ["Aluminum can", "Plastic bag", "Fishing line", "Glass bottle"],
+    correctAnswer: 2,
+  },
+  {
+    id: 8,
+    question: "What percentage of seabirds have plastic in their stomachs?",
+    answers: ["25%", "50%", "70%", "90%"],
+    correctAnswer: 3,
+  },
+  {
+    id: 9,
+    question: "Which everyday item is a major source of microplastic pollution?",
+    answers: ["Metal straws", "Paper bags", "Synthetic clothing", "Wooden utensils"],
+    correctAnswer: 2,
+  },
+  {
+    id: 10,
+    question: "By what year could there be more plastic than fish in the ocean?",
+    answers: ["2030", "2040", "2050", "2100"],
+    correctAnswer: 2,
+  },
 ];
 
 export const LEVEL_CONFIG = [
