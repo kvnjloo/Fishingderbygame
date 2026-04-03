@@ -33,11 +33,11 @@ jobs:
       - name: Sync and Build 🔧
         run: |
           # 1. Clean out any old build attempts
-          rm -rf dist
+          rm -rf dist || true
           # This moves Figma's new art into your working area without deleting your package.json
           cp -r figma-files/* . || true 
           # 3. FORCE your Production "Boss" config (This is the most important part!)
-          cp -f vite.config.js ./vite.config.js
+          cp -f figma-files/vite.config.ts ./vite.config.ts || echo "Config already in root"
           # 4. Standard Build
           npm install
           npm run build
