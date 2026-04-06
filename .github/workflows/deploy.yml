@@ -32,26 +32,24 @@ jobs:
 
       - name: Sync and Build 🔧
         run: |
-          # 1. Clear out any old build data
+          # 1. Clean the deck
           rm -rf dist || true
           
-          # 2. Grab the art from Figma (this might include a 'bad' config)
-          cp -r figma-files/* . || true 
+          # 2. Grab Figma Art (into a temporary room)
+          # We don't use 'cp -r' here because it overwrites our Boss files.
+          # Instead, we only move the 'src' and 'public' folders from Figma.
+          cp -rf figma-files/src ./src || true
+          cp -rf figma-files/public ./public || true
           
-          # 3. THE MASTER MOVE: Overwrite Figma's config with your 'Boss' config
-          # We use -f to force it and ensure it's sitting in the root folder
-          cp vite.config.ts vite.config.ts.tmp && mv -f vite.config.ts.tmp vite.config.ts
-          
-          # 4. Standard Build
+          # 3. VERIFY: We are using the Production Boss files
+          # We don't move these; we just ensure they stay put.
           npm install
+          
+          # 4. The Build
           npm run build
           
-          # 5. THE FORCE-CHANGE MOVE: Create a unique file so GitHub CANNOT skip the deploy
-          # This creates a file called 'build-time.txt' with the current time inside it.
-          date > dist/build-time.txt
-          
-          # 6. DIAGNOSTIC
-          ls -R dist
+          # 5. Diagnostic: Check the index.html BEFORE we deploy
+          grep "src=" dist/index.html
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
